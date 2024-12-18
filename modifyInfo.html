@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="kr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="./css/login.css"
+            crossorigin="anonymous"
+        />
+        <title>커뮤니티만들기</title>
+    </head>
+    <body>
+        <header>
+            <a href="./post.html">
+                <img class="back" src="./public/navigate_before.svg">
+            </a>
+            <h1 style="display: inline">아무 말 대잔치</h1>
+            <a href="./modifyInfo.html">
+                <img class="profile" src="./public/image/default.jpg">
+            </a>
+        </header>
+        <section class="wrap">
+            <article>
+                <div class="inputBox">
+                <p class="smallguide" >회원정보수정</p>
+                    <label for="profile">프로필 사진*</label>
+                </div>
+                <div class="inputBox">
+                    <input type="file" id="profile-photo" accept="image/*">
+                    <label for="profile-photo" class="profileUploadButton">
+                        <p class="editbox">변경</p>
+                    </label>
+                </div>
+                <div class="inputBox">
+                    <label>이메일</label>
+                    <p class="defaultText" id="id"></p>
+                </div>
+                <div class="inputBox">
+                    <label for="pwck">닉네임</label>
+                    <input
+                        type="text"
+                        name="nickname"
+                        id="nickname"
+                        placeholder="닉네임을 입력해 주세요"
+                    />
+                    <p class="helperText" name="nickname"></p>
+                </div>
+                <div class="buttons">
+                    <button id="signupBtn">수정하기</button>
+                    <a id="withdrawBtn">회원 탈퇴</a>
+                </div>
+                <div id="toastContainer"></div>
+            </article>
+        </section>
+        <div class="background"></div>
+        <div class="background1"></div>
+    </body>
+    <script src="./js/modifyInfo.js" type="module"></script>
+</html>

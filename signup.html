@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="kr">
+    <head>
+        <meta charset="UTF-8" />
+        <link
+            rel="stylesheet"
+            href="./css/login.css"
+        />
+        <title>회원가입</title>
+    </head>
+    <body>
+        <section class="alignud">
+        <header>
+            <a href="./loginpage.html">
+                <img class="back" src="./public/navigate_before.svg"></a>
+            <h1 style="display: grid">아무 말 대잔치</h1>
+            <!-- <h1 style="display: grid"> </h1> -->
+        </header>
+        <section class="wrap">
+            <h1 class="title">회원가입</h1>
+            <article>
+                <div class="inputBox">
+                <label for="profile">프로필 사진</label>
+                    <!-- <p class="helperText" name="profile">
+                        *프로필 사진을 추가해주세요.
+                    </p> -->
+                </div>
+                <div class="inputBox">
+                    <input type="file" id="profile-photo" accept="image/*">
+                    <label for="profile-photo" class="profileUploadButton">
+                        <p class="in-photo-icon">+</p>
+                    </label>
+                </div>
+                <div class="inputBox">
+                    <label for="email">이메일*</label>
+                    <input
+                        type="text"
+                        name="email"
+                        id="email"
+                        placeholder="이메일을 입력하세요"
+                    />
+                    <p class="helperText" name="email"></p>
+                </div>
+                <div class="inputBox">
+                    <label for="pw">비밀번호*</label>
+                    <input
+                        type="password"
+                        name="pw"
+                        id="pw"
+                        placeholder="비밀번호를 입력하세요"
+                    />
+                    <p class="helperText" name="pw"></p>
+                </div>
+                <div class="inputBox">
+                    <label for="pwck">비밀번호 확인*</label>
+                    <input
+                        type="password"
+                        name="pw"
+                        id="pwck"
+                        placeholder="비밀번호를 한번 더 입력하세요"
+                    />
+                    <p class="helperText" name="pwck"></p>
+                </div>
+                <div class="inputBox">
+                    <label for="nickname">닉네임*</label>
+                    <input
+                        type="text"
+                        name="nickname"
+                        id="nickname"
+                        placeholder="닉네임을 입력해 주세요"
+                    />
+                    <p class="helperText" name="nickname"></p>
+                </div>
+                <div class="buttons">
+                    <button id="signupBtn">회원 가입</button>
+                    <!-- <button id="backtologin">로그인 하러가기</button> -->
+                    <a href="./loginpage.html">로그인 하러가기</a>
+                </div>
+            </article>
+        </section>
+        </section>
+        <div class="background"></div>
+    </body>
+    <script src="./js/signup.js" type="module"></script>
+</html>
+

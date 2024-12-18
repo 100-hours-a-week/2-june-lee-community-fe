@@ -1,0 +1,39 @@
+[
+    {
+      "title": "이 글은 일글이고 다음글은 이글",
+      "likes": 1,
+      "comments": 1,
+      "views": 1,
+      "date": "2024-12-05",
+      "writer": "june",
+      "image": "./public/image/default.jpg"
+    },
+    {
+      "title": "이글은 이글입니다",
+      "likes": 2,
+      "comments": 2,
+      "views": 2,
+      "date": "2024-12-05",
+      "writer": "june",
+      "image": "./public/image/default.jpg"
+    },
+    {
+      "title": "삼글삼글",
+      "likes": 3,
+      "comments": 3,
+      "views": 3,
+      "date": "2024-12-05",
+      "writer": "june",
+      "image": "./public/image/default.jpg"
+    },
+    {
+      "title": "싸그리",
+      "likes": 4,
+      "comments": 4,
+      "views": 4,
+      "date": "2024-12-05",
+    "writer": "june",
+    "image": "./public/image/default.jpg"
+  }
+]
+  

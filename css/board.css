@@ -1,0 +1,108 @@
+@import url('./common/layout.css');
+@import url('../component/header/header.css');
+@import url('../component/comment/comment.css');
+
+.blue {
+    color: rgba(0, 153, 255, 1);
+}
+
+.red {
+    color: rgba(252, 85, 85, 1);
+}
+.gray {
+    color: rgba(199, 202, 209, 1);
+}
+
+.head {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+
+    border-bottom: 1px solid #00000029;
+    padding-bottom: 16px;
+}
+
+.head .title {
+    font-size: 24px;
+    line-height: 31px;
+    letter-spacing: -0.02em;
+    font-weight: bold;
+    color: #000000;
+}
+
+.head .mod button {
+    padding: 2px 12px;
+
+    border-radius: 8px;
+    border: 1px solid #aca0eb;
+    background-color: transparent;
+
+    cursor: pointer;
+
+    font-size: 15px;
+    line-height: 1.56em;
+}
+.hidden {
+    display: none;
+}
+
+.body {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 32px;
+
+    padding: 16px 0 32px 0;
+
+    border-bottom: 1px solid rgba(238, 238, 241, 1);
+}
+
+.body .content {
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: rgba(92, 97, 112, 1);
+    text-align: left;
+    width: 100%;
+    word-wrap: break-word;
+}
+.comment {
+    width: 90%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 180px 1fr;
+    row-gap: 32px;
+
+    padding: 32px 0;
+}
+
+.comment .helperText {
+    color: #f00;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 10px;
+}
+
+.commentInputWrap div button {
+    padding: 7px 40px;
+    color: rgba(255, 255, 255, 1);
+    font-size: 14px;
+    line-height: 16.8px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+
+    background-color: #aca0eb;
+    border: none;
+    border-radius: 16px;
+}
+
+.commentList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+}
