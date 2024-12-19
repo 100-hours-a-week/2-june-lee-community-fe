@@ -16,7 +16,7 @@ document.getElementById('login').addEventListener('click',function(){
     // .then((response) => {
         // if(response.ok) 
             // window.location.href =`${getServerUrl()}/post.html`;
-            window.location.href =`${getServerUrl()}/post.html`;
+            window.location.href =`${getServerUrl()}/posts.html`;
         
         // else alert("뭔가에러가있어요");
     // });

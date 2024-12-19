@@ -16,7 +16,7 @@ async function loadBoardList() {
     boardData.forEach((item) => {
         const boardHTML = `
             <section class="boardList">
-                <a href="./component/board/boardItem.js" id="boarditem">
+                <a href="/board-modify.html" id="boarditem">
                     <div class="boardItem">
                         <h2 class="title">${item.title}</h2>
                         <div class="info">
@@ -36,15 +36,12 @@ async function loadBoardList() {
             </section>
         `;
         boardContainer.innerHTML += boardHTML; // HTML 추가
+    // alert(boardContainer[1].title);
     });
-console.log(boardContainer);
+// console.log(boardContainer);
+// return boardContainer;
 }
 
-document.getElementById('drop').addEventListener('click',function(){
-    // alert("Oh...");
-    // console.log("Oh...")
-    // headerDropdownMenu();
-});
 
 // 페이지 로드 시 함수 호출
 loadBoardList();

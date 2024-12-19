@@ -5,11 +5,17 @@
     width: 100%;
     padding-left: 16px;
     padding-right: 16px;
-
+    justify-items: center;
+    align-items: center;
     justify-content: flex-start;
     row-gap: 16px;
 }
-
+.boardList{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
 h2 {
     font-size: 24px;
     font-weight: 700;
@@ -56,8 +62,7 @@ h2 {
     border-bottom: 1px solid #00000029;
     background-color: transparent;
 }
-
-.wrap button {
+button{
     width: 80%;
     height: 33px;
     margin-top: 20px;
@@ -74,8 +79,8 @@ h2 {
     color: rgba(255, 255, 255, 1);
 
     border: none;
-}
 
+}
 .non-border {
     border: none !important;
     padding: 0 16px !important;
@@ -86,7 +91,6 @@ h2 {
     padding-left: 10px;
     color: red;
 }
-
 .helperText {
     color: #f00;
     font-size: 12px;
