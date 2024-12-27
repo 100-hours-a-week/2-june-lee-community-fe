@@ -45,7 +45,7 @@ async function loadBoard() {
                 />
             </div>
         `;
-        boardContainer.innerHTML += boardHTML; // HTML 추가
+        boardContainer.innerHTML = boardHTML; // HTML 추가
     });
     console.log(boardContainer);
 }
