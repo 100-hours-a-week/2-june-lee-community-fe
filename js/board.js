@@ -16,15 +16,17 @@ async function loadBoardList() {
     boardData.forEach((item) => {
         const boardHTML = `
             <section class="boardList">
-                <a href="/board-modify.html" id="boarditem">
+                <a href="/post.html" id="boardItem">
                     <div class="boardItem">
                         <h2 class="title">${item.title}</h2>
+
                         <div class="info">
                             <h3 class="views">좋아요 <b>${item.likes}</b></h3>
                             <h3 class="views">댓글 <b>${item.comments}</b></h3>
                             <h3 class="views">조회수 <b>${item.views}</b></h3>
                             <p class="date">${item.date}</p>
                         </div>
+                        
                         <div class="writerInfo">
                             <picture class="img">
                                 <img src="${item.image}" alt="img">

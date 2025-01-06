@@ -16,13 +16,13 @@ body {
 }
 
 .wrap {
-    max-width: 500px;
+    max-width: 700px;
 
-    width: 100%;
+    width: 550px;
     min-height: 100vh;
     padding-top: 142px;
     padding-bottom: 16px;
-    margin: 0 calc(50vw - 212.5px);
+    margin: 0 calc(50vw - 0px);
 
     display: flex;
     flex-direction: column;

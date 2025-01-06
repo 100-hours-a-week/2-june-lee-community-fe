@@ -1,6 +1,6 @@
 @import url('./common/layout.css');
 @import url('../component/header/header.css');
-@import url('../component/comment/comment.css');
+@import url('../component/comment/boardItem.css');
 
 .blue {
     color: rgba(0, 153, 255, 1);
@@ -105,4 +105,145 @@
     display: flex;
     flex-direction: column;
     row-gap: 32px;
+}
+
+
+.head .writerWrap {
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    column-gap: 12px;
+}
+.head .mod {
+    margin-left: auto;
+}
+
+.head .writerWrap .profileImg img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.head .writerWrap .nickname {
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: rgba(69, 72, 84, 1);
+}
+.head .writerWrap .createdAt {
+    font-size: 12px;
+    line-height: 17px;
+    letter-spacing: -0.02em;
+    /* color: rgba(171, 174, 186, 1); */
+    color: #000000;
+    font-weight: 200;
+}
+
+.body .contentImg img {
+    max-width: 100%;
+    max-height: 306px;
+
+    object-fit: contain;
+
+    background: #f4f5f7;
+}
+.wrap {
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+.body .bodyWrap {
+    display: flex;
+    flex-direction: row;
+    column-gap: 64px;
+    text-align: center;
+}
+
+.body .bodyWrap .likeWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    row-gap: 16px;
+}
+
+.body .bodyWrap .likeCount {
+    font-size: 18px;
+    line-height: 25px;
+    letter-spacing: -0.02em;
+}
+
+.body .bodyWrap .likeWrap span {
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+}
+
+.body .bodyWrap .likeWrap span button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.commentWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+.commentWrap div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 116px;
+    height: 77px;
+    border-radius: 16px;
+    background-color: #d9d9d9;
+}
+
+.commentWrap h3 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3em;
+}
+.commentWrap p {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.56em;
+    word-wrap: break-word;
+}
+
+
+.commentInputWrap {
+    display: flex;
+    flex-direction: column;
+
+    height: 180px;
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.commentInputWrap p {
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+.commentInputWrap textarea {
+    height: 100%;
+    background-color: rgba(249, 249, 250, 1);
+    border: none;
+    resize: none;
+    outline: none;
+    padding: 16px;
+}
+.commentInputWrap div {
+    display: flex;
+    justify-content: flex-end;
+    background-color: rgba(249, 249, 250, 1);
+    padding: 5px;
+    margin-top: 0;
+    border-top: 1px solid rgba(238, 238, 241, 1);
 }
