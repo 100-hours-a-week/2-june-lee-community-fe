@@ -3,13 +3,13 @@
 const getServerUrl = () => {
     const host = window.location.hostname;
     return host.includes('localhost')
-        ? 'http://localhost:3000'
-        : '.';
+        ? 'http://localhost:4000'
+        : 'http://localhost:4000';
 };
 // JSON 데이터를 가져와 렌더링하는 함수
 async function loadBoardList() {
     const boardContainer = document.getElementById('boardContainer'); // 데이터를 추가할 컨테이너
-    const response = await fetch(`${getServerUrl()}/js/data.json`); // JSON 파일 불러오기
+    const response = await fetch(`${getServerUrl()}/api/boards`); // JSON 파일 불러오기
     const boardData = await response.json(); // JSON 데이터 파싱
 
     // 각 boardItem을 HTML로 변환

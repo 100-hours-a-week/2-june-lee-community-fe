@@ -14,9 +14,7 @@ header {
 }
 
 header h1 {
-    /* grid-area: center; */
     position: absolute;
-    /* right: 50%; */
     align-items: center;
     justify-content: center;
     font-size: 32px;
@@ -32,12 +30,10 @@ header h1 {
 header .back {
     position: absolute;
     right: 65%;
-    grid-area: lbtn;
     border: none;
     background-color: transparent;
     cursor: pointer;
     width: 40px;
-    /* height: 40px; */
     bottom: 30px;
 }
 

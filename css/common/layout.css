@@ -16,30 +16,24 @@ body {
 }
 
 .wrap {
-    max-width: 700px;
-
-    width: 550px;
-    min-height: 100vh;
-    padding-top: 142px;
-    padding-bottom: 16px;
-    margin: 0 calc(50vw - 0px);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f4f5f7;
-    margin-bottom: 50px;
-}
-.alignud {
     width: 100%;
     min-height: 100vh;
     padding-top: 142px;
     padding-bottom: 16px;
-
+    
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
+    text-align: start;
     background-color: #f4f5f7;
+    margin-bottom: 50px;
+}
+.innerContainer{
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
 }
 .background {
     position: fixed;
@@ -52,17 +46,6 @@ body {
     background-repeat: no-repeat;
     background-size: 100vw 100vh;
 }
-.background1 {
-    position: fixed;
-    width: 1000vw;
-    height: 100vh;
-    top: 0;
-    z-index: -1;
-    background-color: #f4f5f7;
-    background-repeat: no-repeat;
-    background-size: 100vw 100vh;
-}
-
 .background::before {
     content: ''; /* 가상 요소에는 content 속성이 필수 */
     position: absolute; /* 배경 위에 오버레이로 깔림 */
@@ -70,7 +53,5 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* 어두운 오버레이 색상과 투명도 설정 */
-    /* rgba의 마지막 값(0.5)은 투명도를 의미하며, 0에서 1 사이의 값을 가질 수 있습니다.
-       0에 가까울수록 투명해지고, 1에 가까울수록 불투명해집니다. */
+    background: rgba(0, 0, 0, 0.5); 
 }

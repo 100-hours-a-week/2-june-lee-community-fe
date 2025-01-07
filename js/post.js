@@ -1,8 +1,8 @@
 const getServerUrl = () => {
     const host = window.location.hostname;
     return host.includes('localhost')
-        ? 'http://localhost:3000'
-        : '.';
+        ? 'http://localhost:4000'
+        : 'http://localhost:4000';
 };
 
 // document.getElementById('submit').addEventListener('click',function(){
@@ -12,14 +12,12 @@ const getServerUrl = () => {
 // JSON 데이터를 가져와 렌더링하는 함수
 async function loadPost() {
     const postContainer = document.getElementById('postContainer'); // 데이터를 추가할 컨테이너
-    const response = await fetch(`${getServerUrl()}/js/data.json`); // JSON 파일 불러오기
+    const response = await fetch(`${getServerUrl()}/api/boards`); // JSON 파일 불러오기
     const boardData = await response.json(); // JSON 데이터 파싱
 
     // 각 boardItem을 HTML로 변환 -> 나중에 수정/삭제는 본인아이디꺼만 되도록 수정
     boardData.forEach((item) => {
         const boardHTML = `
-        <body>
-            <section class="wrap">
                 <section class="head">
                     <h1 class="title">${item.title}</h1>
                     <div class="writerWrap">
@@ -63,9 +61,7 @@ async function loadPost() {
                     </div>
                     <div class="commentList"></div>
                 </section>
-            </section>
             <div class="background"></div>
-        </body>
         <script src="./js/board.js" type="module"></script>
         `;
         postContainer.innerHTML = boardHTML; // HTML 추가
