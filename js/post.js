@@ -9,7 +9,12 @@ const getServerUrl = () => {
 //     window.location.href = `${getServerUrl()}/post.html`;
 // });
 
-const loadPost = async () => {
+// document.getElementById('modifyBtn').addEventListener('click',function(){
+//     window.location.href = `${getServerUrl()}//board-modify.html?id=${item.id}`;
+// });
+
+// const loadPost = async () => {
+async function loadPost(){
     try {
         // URL에서 ID 추출
         const params = new URLSearchParams(window.location.search);
@@ -57,7 +62,7 @@ const makePost=(item) =>{
                         <h2 class="nickname">${item.writer}</h2>
                         <h3 class="createdAt">${item.date}</h3>
                         <div class="mod">
-                            <button id="modifyBtn">수정</button>
+                            <button id="modifyBtn"><a href="/board-modify.html?id=${item.id}">수정</a></button>
                             <button id="deleteBtn">삭제</button>
                         </div>
                     </div>
