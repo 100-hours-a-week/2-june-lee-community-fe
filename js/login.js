@@ -8,18 +8,32 @@ const getServerUrl = () => {
 // fetch(`${getServerUrl}/js/data.json`)
 // response=>response.json()
 // 입력 필드 선택
-let inputFieldInvalidPwd = document.getElementById('invalidPwd');
+let inputFieldId = document.getElementById('id');
 let inputFieldPwd = document.getElementById('pw');
 let helperText = document.querySelector('.helperText');
-
-
+const loginButton = document.getElementById('login');
+let logInFlag=false;
 function isValidPwd(value){
     return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
 }
 
+inputFieldId.addEventListener('blur', ()=>{
+    if(inputFieldId.value.trim() && isValidPwd(inputFieldPwd.value.trim())){
+        logInFlag=true;
+        loginButton.style.backgroundColor='#7f6aee';
+        // console.log(inputFieldId.value);
+        // console.log(inputFieldPwd.value);
+    }
+    else{
+        logInFlag=false;
+        loginButton.style.backgroundColor='#aca0eb';
+    }
+});
+
 // 포커스를 잃었을 때 (blur 이벤트)
 inputFieldPwd.addEventListener('blur', () => {
-    const check= isValidPwd(inputFieldPwd.value.trim());
+    const check=isValidPwd(inputFieldPwd.value.trim());
+    const lengPwd=inputFieldPwd.value.trim().length;
     if(lengPwd===0){
         helperText.style.display = 'block';
         helperText.innerHTML="비밀번호를 입력하세요";
@@ -31,10 +45,19 @@ inputFieldPwd.addEventListener('blur', () => {
     else {
         helperText.style.display = 'none';
     }
+
+    if(inputFieldId.value.trim() && isValidPwd(inputFieldPwd.value.trim())){
+        logInFlag=true;
+        loginButton.style.backgroundColor='#7f6aee';
+    }
+    else{
+        logInFlag=false;
+        loginButton.style.backgroundColor='#aca0eb';
+    }
 });
 
 inputFieldPwd.addEventListener('input', () => {
-    let lengPwd=inputFieldPwd.value.trim().length;
+    const lengPwd=inputFieldPwd.value.trim().length;
     const check= isValidPwd(inputFieldPwd.value.trim());
     if(lengPwd===0){
         helperText.style.display = 'block';
@@ -65,7 +88,7 @@ document.getElementById('login').addEventListener('click',function(){
     // .then((response) => {
         // if(response.ok) 
             // window.location.href =`${getServerUrl()}/post.html`;
-            window.location.href =`${getServerUrl()}/posts.html`;
+            if(logInFlag) window.location.href =`${getServerUrl()}/posts.html`;
         
         // else alert("뭔가에러가있어요");
     // });
