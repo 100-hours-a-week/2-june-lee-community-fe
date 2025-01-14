@@ -23,21 +23,22 @@
                 <label>제목*</label>
                 <input
                     type="text"
-                    id="title"
+                    id="titleWrite"
                     placeholder="제목을 입력해 주세요. (최대 26자)"
                     maxlength="26"
                 />
-                <p class="helperText" name="title"></p>
+                <!-- <p class="helperText" name="title"></p> -->
             </div>
             <div class="inputBox">
                 <label>내용*</label>
                 <textarea
-                    id="content"
+                    id="contentWrite"
                     placeholder="내용을 입력해 주세요."
                     cols="40"
                 ></textarea>
-                <p class="helperText" name="content"></p>
+                <p class="helperText" name="content" id="helperWrite"></p>
             </div>
+            </br>
             <div class="inputBox">
                 <label class="non-border">이미지</label>
                 <input
@@ -48,7 +49,7 @@
                     accept="image/*"
                 />
             </div>
-            <button id="submit">완료</button>
+            <button id="board-write">완료</button>
             </div>
         </div>
         <div class="background"></div>

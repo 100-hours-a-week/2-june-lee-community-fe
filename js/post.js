@@ -1,8 +1,8 @@
 const getServerUrl = () => {
     const host = window.location.hostname;
     return host.includes('localhost')
-        ? 'http://localhost:4000'
-        : 'http://localhost:4000';
+        ? 'http://localhost:3000'
+        : 'http://localhost:3000';
 };
 
 // document.getElementById('submit').addEventListener('click',function(){

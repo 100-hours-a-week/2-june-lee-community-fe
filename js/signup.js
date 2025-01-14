@@ -20,13 +20,34 @@ inputImg.addEventListener('change',()=>{
     if(!inputImg.value){
         helperTextPhoto.style.display='block';
     }
-    else helperTextPhoto.style.display='none';
+    else{
+        helperTextPhoto.style.display='none';
+        const file=inputImg.files[0];
+        if (!file.type.startsWith('image/')) {
+            helperTextPhoto.innerText = '이미지 파일만 업로드 가능합니다.';
+            helperTextPhoto.style.display = 'block';
+            imagePreview.style.display = 'none';
+            return;
+        }
+    
+        // 파일 읽기 및 미리보기 표시
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result; // 미리보기 이미지 업데이트
+            imagePreview.style.display = 'block'; // 미리보기 표시
+            helperTextPhoto.style.display = 'none'; // 헬퍼 텍스트 숨김
+        };
+        reader.readAsDataURL(file);
+    }
 });
 inputEmail.addEventListener('blur',()=>{
     if(!inputImg.value.trim()){
         helperTextPhoto.style.display='block';
     }
-    else helperTextPhoto.style.display='none';
+    else{
+        helperTextPhoto.style.display='none';
+        setmain
+    }
     //////////////////////////////////////////
     if(!inputEmail.value.trim()){
         helperTextEmail.innerHTML="이메일을 입력해주세요.";
@@ -52,7 +73,10 @@ inputPwd.addEventListener('blur', ()=>{
     if(!inputImg.value.trim()){
         helperTextPhoto.style.display='block';
     }
-    else helperTextPhoto.style.display='none';
+    else{
+        helperTextPhoto.style.display='none';
+        setmain
+    }
     //////////////////////////////////////////
     if(lengPwd===0){
         helperTextPwd.style.display = 'block';
@@ -80,7 +104,10 @@ inputPwck.addEventListener('blur', ()=>{
     const lengPwd=inputPwck.value.trim().length;
     
     if(!inputImg.value.trim()) helperTextPhoto.style.display='block';
-    else helperTextPhoto.style.display='none';
+    else{
+        helperTextPhoto.style.display='none';
+        setmain
+    }
     //////////////////////////////////////////
 
     if(lengPwd===0){
@@ -97,7 +124,10 @@ inputPwck.addEventListener('blur', ()=>{
 });
 inputNkname.addEventListener('blur',()=>{
     if(!inputImg.value.trim()) helperTextPhoto.style.display='block';
-    else helperTextPhoto.style.display='none';
+    else{
+        helperTextPhoto.style.display='none';
+        setmain
+    }
     //////////////////////////////////////////
 
     if(!inputNkname.value.trim()){

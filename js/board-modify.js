@@ -4,46 +4,6 @@ const getServerUrl = () => {
         ? 'http://localhost:3000'
         : 'http://localhost:3000';
 };
-const inputTitle=document.getElementById('titleWrite');
-const inputContent=document.getElementById('contentWrite');
-const inputBtn=document.getElementById('board-write');
-const helperText=document.getElementById('helperWrite');
-
-let writeFlag=false;
-inputTitle.addEventListener('blur',()=>{
-    if(inputTitle.value.length > 26){
-        inputTitle.innerHTML=inputTitle.value.substr(0,26);
-    }
-    if(inputTitle.value && inputContent.value){
-        writeFlag=true;
-        inputBtn.style.backgroundColor='#7f6aee';
-        helperText.style.display='none';
-    }
-    else{
-        writeFlag=false;
-        inputBtn.style.backgroundColor='#aca0eb';
-    }
-});
-inputContent.addEventListener('blur',()=>{
-    if(inputTitle.value && inputContent.value){
-        writeFlag=true;
-        inputBtn.style.backgroundColor='#7f6aee';
-        helperText.style.display='none';
-    }
-    else{
-        writeFlag=false;
-        inputBtn.style.backgroundColor='#aca0eb';
-        // helperText.style.display='block';
-    }
-});
-inputBtn.addEventListener('click',()=>{
-    if(writeFlag) window.location.href =`${getServerUrl()}/posts.html`;
-    else{
-        helperText.innerHTML='제목, 내용을 모두 입력해주세요';
-        helperText.style.display='block';
-    }
-});
-
 const loadPost = async () => {
     try {
         // URL에서 ID 추출
@@ -75,18 +35,23 @@ const editPost=(item) =>{
             <label>제목*</label>
             <input
                 type="text"
-                id="title"
+                id="titleModify"
                 value="${item.title}"
+                maxlength="26";
             />
         </div>
         <div class="inputBox">
             <label>내용*</label>
-            <textarea id="content">${item.content}</textarea>
-            <p class="helperText" name="content"></p>
+            <textarea 
+                id="contentModify" 
+                placeholder="내용을 입력해 주세요."
+                cols="40"
+            >${item.content}</textarea>
+            <p class="helperText" name="content" id="helperModify"></p>
         </div>
         <div class="inputBox">
-            <label class="non-border">이미지</label>
-            <label id="imagePreviewText"></label>
+            <br/>
+            <label class="non-border" id="imagePreviewText">이미지</label>
             <input
                 class="non-border"
                 type="file"
@@ -98,7 +63,28 @@ const editPost=(item) =>{
         </div>
     `;
     boardContainer.innerHTML = boardHTML; // HTML 추가
-    console.log(boardContainer);
+    // console.log(boardContainer);
 }
 // 페이지 로드 시 함수 호출
 loadPost();
+
+const inputBtn=document.getElementById('board-modify');
+let modifyFlag=false;
+
+inputBtn.addEventListener('click',()=>{
+    const inputTitle=document.getElementById('titleModify');
+    const inputContent=document.getElementById('contentModify');
+    const helperText=document.getElementById('helperModify');
+    // alert("good");
+    if(inputTitle.value && inputContent.value){
+        modifyFlag=true;
+        inputBtn.style.display='block';
+    }
+    if(modifyFlag){
+        window.location.href =`${getServerUrl()}/posts.html`;
+    }
+    else{
+        helperText.innerHTML='제목, 내용을 모두 입력해주세요';
+        helperText.style.display='block';
+    }
+});
