@@ -46,7 +46,7 @@ inputEmail.addEventListener('blur',()=>{
     }
     else{
         helperTextPhoto.style.display='none';
-        setmain
+        // setmain
     }
     //////////////////////////////////////////
     if(!inputEmail.value.trim()){
