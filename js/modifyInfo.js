@@ -59,7 +59,7 @@ const helperText =document.getElementById('nickh');
 
 let nickCnt=new Map();
 nickCnt.set('ggg',1);
-const nicknametmp='ggg';
+const nicknametmp='gg';
 document.getElementById('signupBtn').addEventListener('click',function(){
     const nickname = nicknametmp;//document.getElementById('nickname').value;
     // alert("Ins");
@@ -80,7 +80,11 @@ document.getElementById('signupBtn').addEventListener('click',function(){
         helperText.style.display='block';
     }
     else{
-        window.location.href =`${getServerUrl()}/posts.html`;
+        const message='수정완료';
+        showToast(message,2000)
+        setTimeout(() => {
+            window.location.href =`${getServerUrl()}/posts.html`;
+        }, 2500);
     }
     // fetch(`${getServerUrl()}/post.html`);
     // .then((response) => {
@@ -93,7 +97,30 @@ document.getElementById('signupBtn').addEventListener('click',function(){
     
     // alert("???");
 });
-// function loada(){
-//     alert("hi");
-// };
-// loada();
+
+const showToast = (message, duration = 3000) => {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.classList.add('toastMessage');
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    // 메시지를 보여주기
+    setTimeout(() => {
+        toast.style.opacity = 1;
+        // 조금 더 위로 올라가는 효과를 줄 수 있음
+        toast.style.bottom = '30px';
+    }, 100);
+
+    // 메시지 숨기기 및 콜백 실행
+    setTimeout(() => {
+        toast.style.opacity = 0;
+        // 원래 위치로 돌아가며 사라지는 효과
+        toast.style.bottom = '20px';
+        setTimeout(() => {
+            // 페이드 아웃이 끝난 후 요소 제거
+            toast.remove();
+        }, 500); // CSS transition 시간에 맞춰 설정
+    }, duration);
+};

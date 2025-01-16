@@ -94,7 +94,7 @@ const makePost=(item) =>{
                             <button class="commentInputBtn">댓글 등록</button>
                         </div>
                     </div>
-                    <div class="commentList"></div>
+                    <div class="commentList">1</div>
                 </section>
             <div class="background"></div>
         <script src="./js/board.js" type="module"></script>
