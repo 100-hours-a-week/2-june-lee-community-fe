@@ -22,7 +22,7 @@ async function loadBoardList() {
     boardData.forEach((item) => {
         let totalViews=item.views;
         let totalLikes=item.likes;
-        let totalComments=item.comments;
+        let totalComments=item.comment.length;
         if(item.views>=1000){
             totalViews=(item.views/1000)+"k";
         }

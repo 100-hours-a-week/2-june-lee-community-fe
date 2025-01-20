@@ -48,11 +48,6 @@ const loadPost = async () => {
     try {
         // URL에서 ID 추출
         const params = new URLSearchParams(window.location.search);
-        const boardId = params.get('id'); // 예: ?id=1
-        if (!boardId) {
-            alert('잘못된 접근입니다.');
-            return;
-        }
 
         const response = await fetch(`http://localhost:4000/api/boards/${boardId}`);
         const board = await response.json();
