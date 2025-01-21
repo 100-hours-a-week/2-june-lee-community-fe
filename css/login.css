@@ -183,6 +183,7 @@ a {
     display: flex;
     justify-content: center;  
     align-items: center; 
+
     border-radius: 50%; 
     background-color: #c0c0c0;
     color: white;
@@ -192,6 +193,7 @@ a {
     align-self: center;
     cursor: pointer; 
     white-space: nowrap;
+    overflow: hidden;
 
 }
 .in-photo-icon { 
@@ -203,12 +205,16 @@ a {
     font-weight: 100;
     color: black;
 }
-#profilePreview {
+.profilePreview {
     filter: brightness(50%);
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
+    width: auto;
+    height: auto;
+    max-width: 125%;
+    max-height: 125%;
+    object-fit: contain;
+    object-position: center;
+    align-self: center;
 }
-.buttons button:hover{
+/* .buttons button:hover{
     background-color: #7f6aee;
-}
+} */

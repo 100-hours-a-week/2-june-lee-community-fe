@@ -11,10 +11,15 @@ const loadPost = async () => {
         const boardId = params.get('id'); // 예: ?id=1
         if (!boardId) {
             alert('잘못된 접근입니다.');
+            window.location.href =`${getServerUrl()}/posts.html`;
             return;
         }
 
         const response = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+        if(!response.ok){
+            alert("게시글 로딩에 문제가 있습니다.");
+            window.location.href =`${getServerUrl()}/posts.html`;
+        }
         const board = await response.json();
         // console.log('게시글 상세:', board);
         editPost(board);
@@ -65,15 +70,14 @@ const editPost=(item) =>{
     boardContainer.innerHTML = boardHTML; // HTML 추가
     // console.log(boardContainer);
 }
-// 페이지 로드 시 함수 호출
-loadPost();
 
 const inputBtn=document.getElementById('board-modify');
 let modifyFlag=false;
 
-inputBtn.addEventListener('click',()=>{
+inputBtn.addEventListener('click', async () => {
     const inputTitle=document.getElementById('titleModify');
     const inputContent=document.getElementById('contentModify');
+    const inputImage=document.getElementById('image')
     const helperText=document.getElementById('helperModify');
     // alert("good");
     if(inputTitle.value && inputContent.value){
@@ -81,6 +85,30 @@ inputBtn.addEventListener('click',()=>{
         inputBtn.style.display='block';
     }
     if(modifyFlag){
+        const params = new URLSearchParams(window.location.search);
+        const boardId = params.get('id'); // 예: ?id=1
+
+        const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+        const inputData = await tmp.json();
+
+        const response = await fetch(`http://localhost:4000/api/boards/${boardId}}`, {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "title": `${inputTitle.value}`,
+                "content": `${inputContent.value}`,
+                "likes": inputData.likes,
+                "views": inputData.views,
+                "writer": inputData.writer,
+                "image": inputImage.files[0]?.name || inputData.image,
+                "comment": inputData.comment
+            }),
+        });
+        if(!response.ok){
+            console.error('게시글이 등록되지 않았습니다.');
+        }
         window.location.href =`${getServerUrl()}/posts.html`;
     }
     else{
@@ -88,3 +116,5 @@ inputBtn.addEventListener('click',()=>{
         helperText.style.display='block';
     }
 });
+// 페이지 로드 시 함수 호출
+loadPost();

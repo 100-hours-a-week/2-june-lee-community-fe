@@ -119,7 +119,6 @@ const makePost=(item) =>{
                     <div class="commentList"></div>
                 </section>
             <div class="background"></div>
-        <script src="./component/comment/comment.js" type="module"></script>
         `;
         postContainer.innerHTML = boardHTML; // HTML 추가
     console.log(postContainer);

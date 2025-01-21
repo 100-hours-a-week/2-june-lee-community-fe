@@ -12,23 +12,26 @@ const helperTextNkname=document.getElementById('nicknameh');
 let imck=false;
 let emck=false;
 let pwck=false;
-let pwkck=false
-let nkck=false
+let pwkck=false;
+let nkck=false;
 function isValidPwd(value){
     return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
 }
 function isValidEmail(value){
     return /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(value);
 }
+const imagePreview = document.getElementById('imagePreview');
 inputImg.addEventListener('change',()=>{
-    if(!inputImg.value){
+    const imFile=inputImg.files[0];
+    if(!imFile){
+        helperTextPhoto.innerText='이미지를 선택해주세요';
         helperTextPhoto.style.display='block';
+        imagePreview.style.display='none'
         imck=false;
+        return;
     }
     else{
-        helperTextPhoto.style.display='none';
-        const file=inputImg.files[0];
-        if (!file.type.startsWith('image/')) {
+        if (!imFile.type.startsWith('image/')) {
             helperTextPhoto.innerText = '이미지 파일만 업로드 가능합니다.';
             helperTextPhoto.style.display = 'block';
             imagePreview.style.display = 'none';
@@ -36,15 +39,40 @@ inputImg.addEventListener('change',()=>{
             return;
         }
         imck=true;
-    
+        helperTextPhoto.style.display = 'none'; // 헬퍼 텍스트 숨김
+        
         // 파일 읽기 및 미리보기 표시
         const reader = new FileReader();
-        reader.onload = (e) => {
-            imagePreview.src = e.target.result; // 미리보기 이미지 업데이트
-            imagePreview.style.display = 'block'; // 미리보기 표시
-            helperTextPhoto.style.display = 'none'; // 헬퍼 텍스트 숨김
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            // `profileUploadButton` 크기에 맞게 canvas 생성
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const width = profileUploadButton.clientWidth; // 부모 요소 너비
+            const height = profileUploadButton.clientHeight; // 부모 요소 높이
+
+            canvas.width = width;
+            canvas.height = height;
+
+            // 이미지 크기 조정하여 canvas에 그리기
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // canvas를 이미지 URL로 변환
+            const resizedImage = canvas.toDataURL('image/jpeg');
+
+            // 미리보기 이미지 업데이트
+            imagePreview.src = resizedImage;
+            imagePreview.style.display = 'block';
         };
-        reader.readAsDataURL(file);
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(imFile); 
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block'; // 미리보기 표시
+        };
+        reader.readAsDataURL(imFile);
     }
 });
 inputEmail.addEventListener('blur',()=>{
