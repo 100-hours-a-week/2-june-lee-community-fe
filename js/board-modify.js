@@ -87,27 +87,30 @@ inputBtn.addEventListener('click', async () => {
     if(modifyFlag){
         const params = new URLSearchParams(window.location.search);
         const boardId = params.get('id'); // 예: ?id=1
-
+        console.log('boardId:', boardId);
         const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
         const inputData = await tmp.json();
 
-        const response = await fetch(`http://localhost:4000/api/boards/${boardId}}`, {
-            method:'POST',
+        const response = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+            method:'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "title": `${inputTitle.value}`,
-                "content": `${inputContent.value}`,
+                "id": inputData.id,
+                "title": inputTitle.value,
+                "content": inputContent.value,
                 "likes": inputData.likes,
                 "views": inputData.views,
+                "date":inputData.date,
                 "writer": inputData.writer,
                 "image": inputImage.files[0]?.name || inputData.image,
-                "comment": inputData.comment
+                "comment": inputData.comment || []
             }),
         });
         if(!response.ok){
             console.error('게시글이 등록되지 않았습니다.');
+            return;
         }
         window.location.href =`${getServerUrl()}/posts.html`;
     }

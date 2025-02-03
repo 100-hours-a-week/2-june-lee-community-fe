@@ -43,7 +43,7 @@ inputPwd.addEventListener('blur', ()=>{
         signupBtn.style.backgroundColor='#ACA0EB';
         modifyFlag=false;
     }
-    else if(check && (inputPwd.value.trim() && inputPwck.value.trim()) && inputPwd.value.trim() !== inputPwck.value.trim()){
+    else if(check && (inputPwd.value.trim() && inputPwck.value.trim()) && inputPwd.value.trim() === inputPwck.value.trim()){
         helperTextPwd.style.display='none';
         helperTextPwck.style.display='none';
         modifyFlag=true;

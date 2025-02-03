@@ -5,8 +5,9 @@ const getServerUrl = () => {
         : 'http://localhost:3000';
 };
 
-// document.getElementById('submit').addEventListener('click',function(){
-//     window.location.href = `${getServerUrl()}/post.html`;
+// document.getElementsById('likeCount').addEventListener('click',function(){
+//     // window.location.href = `${getServerUrl()}/post.html`;
+//     alert("haha");
 // });
 
 // document.getElementById('modifyBtn').addEventListener('click',function(){
@@ -30,6 +31,28 @@ async function loadPost(){
         // console.log(boardComments[0]);
         // console.log('게시글 상세:', board);
         makePost(board);
+        ///////////////////////////////////
+        const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+        const inputData = await tmp.json();
+
+        const addView = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+            method:'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "id": inputData.id,
+                "title": inputData.value,
+                "content": inputData.value,
+                "likes": inputData.likes,
+                "views": inputData.views+1,
+                "date":inputData.date,
+                "writer": inputData.writer,
+                "image":  inputData.image,
+                "comment": inputData.comment || []
+            }),
+        });
+        ///////////////////////////////////
         try {
             if (Array.isArray(boardComments)) {
                 const commentList = document.querySelector('.commentList');
@@ -62,6 +85,7 @@ const makePost=(item) =>{
     // const boardData = await response.json(); // JSON 데이터 파싱
 
     // 각 boardItem을 HTML로 변환 -> 나중에 수정/삭제는 본인아이디꺼만 되도록 수정
+        
         let totalViews=item.views;
         let totalLikes=item.likes;
         let totalComments=item.comment.length;
@@ -96,7 +120,7 @@ const makePost=(item) =>{
                         <div class="commentWrap">
                             <div class="likeCount">
                                 <h3></h3>
-                                <p>좋아요 <br> ${totalLikes}</p>
+                                <p id=likeCount>좋아요 <br> ${totalLikes}</p>
                             </div>
                             <div class="viewCount">
                                 <h3></h3>

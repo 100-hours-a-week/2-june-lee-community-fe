@@ -4,6 +4,7 @@ const inputEmail=document.getElementById('email');
 const inputPwd=document.getElementById('pw');
 const inputPwck=document.getElementById('pwck');
 const inputNkname=document.getElementById('nickname');
+const inputBtn = document.getElementById('signupBtn');
 const helperTextPhoto=document.getElementById('profileh');
 const helperTextEmail=document.getElementById('emailh');
 const helperTextPwd=document.getElementById('pwh');
@@ -14,6 +15,7 @@ let emck=false;
 let pwck=false;
 let pwkck=false;
 let nkck=false;
+let allcomplete=false;
 function isValidPwd(value){
     return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
 }
@@ -74,6 +76,14 @@ inputImg.addEventListener('change',()=>{
         };
         reader.readAsDataURL(imFile);
     }
+    if((imck && emck && pwck && pwkck && nkck)){
+        inputBtn.style.backgroundColor='#7f6aee';
+        allcomplete=true;
+    }
+    else{
+        inputBtn.style.backgroundColor='#aca0eb';
+        allcomplete=false;
+    }
 });
 inputEmail.addEventListener('blur',()=>{
     if(!inputImg.value.trim()){
@@ -103,6 +113,14 @@ inputEmail.addEventListener('blur',()=>{
     //     helperTextEmail.innerText='중복된 이메일입니다.';
     //     helperTextEmail.style.display='block';
     // }
+    if((imck && emck && pwck && pwkck && nkck)){
+        inputBtn.style.backgroundColor='#7f6aee';
+        allcomplete=true;
+    }
+    else{
+        inputBtn.style.backgroundColor='#aca0eb';
+        allcomplete=false;
+    }
 
 });
 inputPwd.addEventListener('blur', ()=>{
@@ -144,6 +162,14 @@ inputPwd.addEventListener('blur', ()=>{
         pwck=true;
         pwkck=true;
     }
+    if((imck && emck && pwck && pwkck && nkck)){
+        inputBtn.style.backgroundColor='#7f6aee';
+        allcomplete=true;
+    }
+    else{
+        inputBtn.style.backgroundColor='#aca0eb';
+        allcomplete=false;
+    }
 });
 inputPwck.addEventListener('blur', ()=>{
     const lengPwd=inputPwck.value.trim().length;
@@ -171,6 +197,14 @@ inputPwck.addEventListener('blur', ()=>{
     else {
         helperTextPwck.style.display='none';
         pwkck=true;
+    }
+    if((imck && emck && pwck && pwkck && nkck)){
+        inputBtn.style.backgroundColor='#7f6aee';
+        allcomplete=true;
+    }
+    else{
+        inputBtn.style.backgroundColor='#aca0eb';
+        allcomplete=false;
     }
 });
 inputNkname.addEventListener('blur',()=>{
@@ -206,6 +240,14 @@ inputNkname.addEventListener('blur',()=>{
     else{
         helperTextNkname.style.display='none';
         nkck=true;
+    }
+    if((imck && emck && pwck && pwkck && nkck)){
+        inputBtn.style.backgroundColor='#7f6aee';
+        allcomplete=true;
+    }
+    else{
+        inputBtn.style.backgroundColor='#aca0eb';
+        allcomplete=false;
     }
 });
 

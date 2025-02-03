@@ -427,3 +427,6 @@
     width: 100%;
     height: 200px;
 }
+.button:hover {
+    background-color: #7f6aee; /* 여기서 색상을 원하는 색으로 변경하세요 */
+}
