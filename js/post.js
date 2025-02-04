@@ -5,10 +5,6 @@ const getServerUrl = () => {
         : 'http://localhost:3000';
 };
 
-// document.getElementsById('likeCount').addEventListener('click',function(){
-//     // window.location.href = `${getServerUrl()}/post.html`;
-//     alert("haha");
-// });
 
 // document.getElementById('modifyBtn').addEventListener('click',function(){
 //     window.location.href = `${getServerUrl()}//board-modify.html?id=${item.id}`;
@@ -109,7 +105,7 @@ const makePost=(item) =>{
                         <h3 class="createdAt">${item.date}</h3>
                         <div class="mod">
                             <button id="modifyBtn"><a href="/board-modify.html?id=${item.id}">수정</a></button>
-                            <button id="deleteBtn">삭제</button>
+                            <button class="deleteBtn" id="deleteBtn">삭제</button>
                         </div>
                     </div>
                 </section>
@@ -118,9 +114,9 @@ const makePost=(item) =>{
                     <article class="content">${item.content}</article>
                     <article class="bodyWrap">
                         <div class="commentWrap">
-                            <div class="likeCount">
+                            <div class="likeCount" id="likeCount">
                                 <h3></h3>
-                                <p id=likeCount>좋아요 <br> ${totalLikes}</p>
+                                <p>좋아요 <br> ${totalLikes}</p>
                             </div>
                             <div class="viewCount">
                                 <h3></h3>
@@ -146,6 +142,89 @@ const makePost=(item) =>{
         `;
         postContainer.innerHTML = boardHTML; // HTML 추가
     console.log(postContainer);
+    let likeFlag=false;
+    const lcnt=document.getElementById('likeCount');
+
+    document.addEventListener('click', async(event) =>{
+        //일단 likes 추가 구현만, 로그인 기능 만들고 추가예정 -> 현재 새로고침시 초기화되는상태/ 아이디별로 기록
+        if (event.target.closest('#likeCount')) {
+            const params = new URLSearchParams(window.location.search);
+            const boardId = params.get('id'); // 예: ?id=1
+            const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+            const inputData = await tmp.json();
+            if(!likeFlag){
+                lcnt.style.backgroundColor='#ACA0EB';
+                likeFlag=true;
+
+                const addLike = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+                    method:'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "id": inputData.id,
+                        "title": inputData.value,
+                        "content": inputData.value,
+                        "likes": inputData.likes+1,
+                        "views": inputData.views,
+                        "date":inputData.date,
+                        "writer": inputData.writer,
+                        "image":  inputData.image,
+                        "comment": inputData.comment || []
+                    }),
+                });
+                // location.reload();
+            }
+            else{
+                lcnt.style.backgroundColor='#D9D9D9';
+                likeFlag=false;
+                const minusLike = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+                    method:'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "id": inputData.id,
+                        "title": inputData.value,
+                        "content": inputData.value,
+                        "likes": inputData.likes-1,
+                        "views": inputData.views,
+                        "date":inputData.date,
+                        "writer": inputData.writer,
+                        "image":  inputData.image,
+                        "comment": inputData.comment || []
+                    }),
+                });
+            }
+            const response = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+            const updatedData = await response.json();
+        
+            // 좋아요 개수만 업데이트
+            document.getElementById('likeCount').innerHTML = `
+                <h3></h3>
+                <p>좋아요 <br> ${updatedData.likes}</p>
+            `;
+        }
+    });
+    document.addEventListener('click', async(event) => {
+        if(event.target.closest('#deleteBtn')){
+            Dialog(
+                '게시글을 삭제하시겠습니까?',
+                '삭제한 내용은 복구 할 수 없습니다.',
+                async () => {
+                    // alert("midcheck");
+                    const response = await deleteComment(postId, commentId);
+                    if (!response.ok) {
+                        Dialog('삭제 실패', '댓글 삭제에 실패하였습니다.');
+                        return;
+                    }
+                
+                    if (response.status === HTTP_OK)
+                        location.href = '/post.html?id=' + postId;
+                },
+            );
+        }
+    });
 }
 
 const CommentItem = (data, writerId, postId, commentId) => {

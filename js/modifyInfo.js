@@ -5,57 +5,7 @@ const getServerUrl = () => {
         : 'http://localhost:3000';
 };
 
-// fetch(`${getServerUrl}/js/data.json`)
-// response=>response.json()
-// 입력 필드 선택
 const helperText =document.getElementById('nickh');
-// let inputFieldId = document.getElementById('id');
-// let inputFieldPwd = document.getElementById('pw');
-// // let helperText = document.querySelector('.helperText');
-// const loginButton = document.getElementById('login');
-// let logInFlag=false;
-// function isValidPwd(value){
-//     return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
-// }
-
-// inputFieldId.addEventListener('blur', ()=>{
-//     if(inputFieldId.value.trim() && isValidPwd(inputFieldPwd.value.trim())){
-//         logInFlag=true;
-//         loginButton.style.backgroundColor='#7f6aee';
-//         // console.log(inputFieldId.value);
-//         // console.log(inputFieldPwd.value);
-//     }
-//     else{
-//         logInFlag=false;
-//         loginButton.style.backgroundColor='#aca0eb';
-//     }
-// });
-
-// // 포커스를 잃었을 때 (blur 이벤트)
-// inputFieldPwd.addEventListener('blur', () => {
-//     const check=isValidPwd(inputFieldPwd.value.trim());
-//     const lengPwd=inputFieldPwd.value.trim().length;
-//     if(lengPwd===0){
-//         helperText.style.display = 'block';
-//         helperText.innerHTML="비밀번호를 입력하세요";
-//     }
-//     else if (!check) {
-//         helperText.innerHTML='비밀번호는 8자 이상, 20자 이하이며, 대문자, 소문자, 숫자, 특수문자를 각각 최소 1개 포함해야 합니다.';
-//         helperText.style.display = 'block';
-//     }
-//     else {
-//         helperText.style.display = 'none';
-//     }
-
-//     if(inputFieldId.value.trim() && isValidPwd(inputFieldPwd.value.trim())){
-//         logInFlag=true;
-//         loginButton.style.backgroundColor='#7f6aee';
-//     }
-//     else{
-//         logInFlag=false;
-//         loginButton.style.backgroundColor='#aca0eb';
-//     }
-// });
 
 let nickCnt=new Map();
 nickCnt.set('ggg',1);
@@ -123,4 +73,76 @@ const showToast = (message, duration = 3000) => {
             toast.remove();
         }, 500); // CSS transition 시간에 맞춰 설정
     }, duration);
+};
+const Dialog = (title, description, submitCallBack, type = 'alert') => {
+    const wrap = document.createElement('div');
+    const titleWrap = document.createElement('h2');
+    const descriptionWrap = document.createElement(
+        type == 'alert' ? 'p' : 'textarea',
+    );
+
+    const buttonWrap = document.createElement('div');
+    const cancelButton = document.createElement('button');
+    const submitButton = document.createElement('button');
+
+    wrap.classList.add('dialog');
+    titleWrap.classList.add('dialog-title');
+    descriptionWrap.classList.add('dialog-description');
+    if (type == 'textarea') {
+        descriptionWrap.classList.add('dialog-description-textarea');
+    }
+    buttonWrap.classList.add('dialog-button-wrap');
+    cancelButton.classList.add('dialog-button');
+    cancelButton.classList.add('dialog-button-cancel');
+    submitButton.classList.add('dialog-button');
+    submitButton.classList.add('dialog-button-submit');
+
+    wrap.appendChild(titleWrap);
+    wrap.appendChild(descriptionWrap);
+    wrap.appendChild(buttonWrap);
+    buttonWrap.appendChild(cancelButton);
+    buttonWrap.appendChild(submitButton);
+
+    titleWrap.textContent = title;
+    descriptionWrap.textContent = description;
+    cancelButton.textContent = '취소';
+    submitButton.textContent = '확인';
+
+    const Background = document.createElement('div');
+    Background.classList.add('dialog-background');
+    Background.appendChild(wrap);
+
+    document.body.appendChild(Background);
+
+    cancelButton.addEventListener('click', () => {
+        Background.remove();
+    });
+    submitButton.addEventListener('click', () => {
+        if (submitCallBack) {
+            if (type == 'alert') submitCallBack();
+            else submitCallBack(descriptionWrap.value);
+        }
+        Background.remove();
+    });
+};
+document.getElementById('withdrawBtn').onclick = async() => {
+// document.addEventListener('click', async(event) => {
+    // if(event.target.closest('#withdrawBtn')){
+    // alert("d");
+        Dialog(
+            '회원탈퇴 하시겠습니까?',
+            '작성된 게시글과 댓글은 삭제됩니다.',
+            async () => {
+                // alert("midcheck");
+                const response = await deleteComment(postId, commentId);
+                if (!response.ok) {
+                    Dialog('삭제 실패', '댓글 삭제에 실패하였습니다.');
+                    return;
+                }
+            
+                if (response.status === HTTP_OK)
+                    location.href = '/post.html?id=' + postId;
+            },
+        );
+    // }
 };
