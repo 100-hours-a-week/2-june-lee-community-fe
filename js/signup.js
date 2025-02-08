@@ -17,7 +17,7 @@ let pwkck=false;
 let nkck=false;
 let allcomplete=false;
 function isValidPwd(value){
-    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
+    return /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
 }
 function isValidEmail(value){
     return /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(value);
@@ -261,9 +261,23 @@ const getServerUrl = () => {
 // document.getElementById('backtologin').addEventListener('click',function(){
 //     window.location.href=`${getServerUrl}/loginpage.html`;
 // });
-document.getElementById('signupBtn').addEventListener('click',function(){
+document.getElementById('signupBtn').addEventListener('click',async function(){
     if(!(imck && emck && pwck && pwkck && nkck)) return;
 
+
+    // const formData = new FormData();
+    // formData.append('nickname', inputNkname.value); // 작성자
+    // formData.append('email', inputEmail.value);
+    // formData.append('password', inputPwd.value);
+
+    // // 이미지 파일 추가
+    // if (inputImg.files[0]) {
+    //     formData.append('image', inputImg.files[0]);
+    // }
+    // const response = await fetch(`http://localhost:4000/api/boards`, {
+    //     method: 'POST',
+    //     body: formData, 
+    // });
     // fetch(`${getServerUrl()}/post.html`);
     // .then((response) => {
         // if(response.ok) 

@@ -39,22 +39,25 @@ inputContent.addEventListener('blur',()=>{
 });
 inputBtn.addEventListener('click',async()=>{
     if(writeFlag){
-        console.log('asdf');
-        const response = await fetch(`http://localhost:4000/api/boards`, {
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "title": `${inputTitle.value}`,
-                "content": `${inputContent.value}`,
-                "likes": 0,
-                "views": 0,
-                "writer": "june",
-                "image": inputImage.files[0]?.name || '',
-                "comment": []
-            }),
-        });
+        // console.log('asdf');
+        const formData = new FormData();
+        formData.append('title', inputTitle.value);
+        formData.append('content', inputContent.value);
+        formData.append('likes', 0); // 초기값
+        formData.append('views', 0); // 초기값
+        formData.append('writer', 'june'); // 작성자
+
+        // 이미지 파일 추가
+        if (inputImage.files[0]) {
+            formData.append('image', inputImage.files[0]);
+        }
+        formData.append('comment',[]);
+        // try {
+            const response = await fetch(`http://localhost:4000/api/boards`, {
+                method: 'POST',
+                body: formData, // FormData 전송
+            });
+    
         if(!response.ok){
             console.error('게시글이 등록되지 않았습니다.');
         }

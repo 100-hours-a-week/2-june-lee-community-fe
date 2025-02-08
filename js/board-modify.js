@@ -91,23 +91,40 @@ inputBtn.addEventListener('click', async () => {
         const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
         const inputData = await tmp.json();
 
-        const response = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
-            method:'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "id": inputData.id,
-                "title": inputTitle.value,
-                "content": inputContent.value,
-                "likes": inputData.likes,
-                "views": inputData.views,
-                "date":inputData.date,
-                "writer": inputData.writer,
-                "image": inputImage.files[0]?.name || inputData.image,
-                "comment": inputData.comment || []
-            }),
-        });
+        // const response = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+        //     method:'PATCH',
+        //     body: JSON.stringify({
+        //         "id": inputData.id,
+        //         "title": inputTitle.value,
+        //         "content": inputContent.value,
+        //         "likes": inputData.likes,
+        //         "views": inputData.views,
+        //         "date":inputData.date,
+        //         "writer": inputData.writer,
+        //         "image": inputImage.files[0]?.name || inputData.image,
+        //         "comment": inputData.comment || []
+        //     }),
+        // });
+        const formData = new FormData();
+        formData.append("id", parseInt(inputData.id));
+        formData.append('title', inputTitle.value);
+        formData.append('content', inputContent.value);
+        formData.append('likes', parseInt(inputData.likes)); // 초기값
+        formData.append('views', parseInt(inputData.views)); // 초기값
+        formData.append('date',inputData.date);
+        formData.append('writer', inputData.writer); // 작성자
+        formData.append('comment', inputData.comment);
+
+        // 이미지 파일 추가
+        if (inputImage.files[0]) {
+            formData.append('image', inputImage.files[0]);
+        }
+        // else formData.append('image', inputData.image);
+        // try {
+            const response = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+                method: 'PATCH',
+                body: formData, // FormData 전송
+            });
         if(!response.ok){
             console.error('게시글이 등록되지 않았습니다.');
             return;

@@ -21,33 +21,52 @@ async function loadPost(){
             return;
         }
 
-        const response = await fetch(`http://localhost:4000/api/boards/${boardId}`);
-        const board = await response.json();
-        const boardComments = board.comment;
+        const bData = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+        const board = await bData.json();
+        const boardComments = board.comment || [];
         // console.log(boardComments[0]);
         // console.log('게시글 상세:', board);
         makePost(board);
         ///////////////////////////////////
-        const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
-        const inputData = await tmp.json();
-
-        const addView = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
-            method:'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "id": inputData.id,
-                "title": inputData.value,
-                "content": inputData.value,
-                "likes": inputData.likes,
-                "views": inputData.views+1,
-                "date":inputData.date,
-                "writer": inputData.writer,
-                "image":  inputData.image,
-                "comment": inputData.comment || []
-            }),
-        });
+        // const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+        // const inputData = await tmp.json();
+        const formData = new FormData();
+        formData.append("id", parseInt(board.id));
+        formData.append('title', board.title);
+        formData.append('content', board.content);
+        formData.append('likes', parseInt(board.likes));
+        formData.append('views', parseInt(board.views)+1);
+        formData.append('date',board.date);
+        formData.append('writer', board.writer); 
+        // formData.append('comment', JSON.stringify(board.comment));
+        const commentData = board.comment && Array.isArray(board.comment) ? board.comment : [];
+        formData.append("comment", JSON.stringify(commentData)); // JSON 문자열로 변환
+        // if(board)
+        // console.log(commentData);
+        // 이미지 파일 추가
+        if (board.image) {
+            formData.append('image', board.image);
+        }
+        // else formData.append('image', inputData.image);
+        // try {
+            const response = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+                method: 'PATCH',
+                body: formData, // FormData 전송
+            });
+        // const addView = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+        //     method:'PATCH',
+        //     body: JSON.stringify({
+        //         "id": inputData.id,
+        //         "title": inputData.value,
+        //         "content": inputData.value,
+        //         "likes": inputData.likes,
+        //         "views": parseInt(inputData.views)+parseInt(1),
+        //         "date":inputData.date,
+        //         "writer": inputData.writer,
+        //         "image":  inputData.image,
+        //         "comment": inputData.comment || []
+        //     }),
+        // });
         ///////////////////////////////////
         try {
             if (Array.isArray(boardComments)) {
@@ -56,7 +75,7 @@ async function loadPost(){
                     const commentElement = CommentItem({
                         comment_content: comment.ccontent,  //댓글 내용
                         user_id: board.writer,  //누가 썼는지
-                        created_at: comment.ccdate, //언제 썼는지
+                        created_at: comment.cdate, //언제 썼는지
                         profileImage: './public/image/default.jpg', // 기본 이미지
                         nickname: comment.cwriter,
                     }, board.writer, boardId, comment.cid);
@@ -86,31 +105,32 @@ const makePost=(item) =>{
         let totalLikes=item.likes;
         let totalComments=item.comment.length;
         if(item.views>=1000){
-            totalViews=(item.views/1000)+"k";
+            totalViews=Math.floor(item.views/1000)+"k";
         }
         if(item.comments>=1000){
-            totalComments=(item.views/1000)+"k";
+            totalComments=Math.floor(item.comments/1000)+"k";
         }
         if(item.likes>=1000){
-            totalLikes=(item.views/1000)+"k";
+            totalLikes=Math.floor(item.likes/1000)+"k";
         }
         const boardHTML = `
                 <section class="head">
                     <h1 class="title">${item.title}</h1>
                     <div class="writerWrap">
                         <picture class="profileImg">
-                            <img src="${item.image}" alt="img"/>
+                            <img src="${item.image ? `http://localhost:4000${item.image}` : './public/image/default.jpg'}" alt="img"/>
                         </picture>
                         <h2 class="nickname">${item.writer}</h2>
                         <h3 class="createdAt">${item.date}</h3>
                         <div class="mod">
-                            <button id="modifyBtn"><a href="/board-modify.html?id=${item.id}">수정</a></button>
+                            <button id="modifyBtn"> <a href="/board-modify.html?id=${item.id}">수정</a></button>
+
                             <button class="deleteBtn" id="deleteBtn">삭제</button>
                         </div>
                     </div>
                 </section>
                 <section class="body">
-                    <div class="contentImg"></div>
+                    <div class="contentImg"> <img src="${item.image ? `http://localhost:4000${item.image}` : './public/image/default.jpg'}" alt="게시글 이미지"></div>
                     <article class="content">${item.content}</article>
                     <article class="bodyWrap">
                         <div class="commentWrap">
@@ -142,6 +162,22 @@ const makePost=(item) =>{
         `;
         postContainer.innerHTML = boardHTML; // HTML 추가
     console.log(postContainer);
+    let beforeColor, beforeBcolor;
+    document.addEventListener('mouseover', (event) => {
+        if (event.target.matches('button')) {
+            beforeBcolor=event.target.style.backgroundColor;
+            beforeColor=event.target.style.color;
+            event.target.style.backgroundColor = '#7f6aee'; // hover 색상 적용
+            event.target.style.color = 'white';
+        }
+    });
+    
+    document.addEventListener('mouseout', (event) => {
+        if (event.target.matches('button')) {
+            event.target.style.backgroundColor = beforeBcolor; // hover 하기 전 색상
+            event.target.style.color = beforeColor;
+        }
+    });
     let likeFlag=false;
     const lcnt=document.getElementById('likeCount');
 
@@ -156,45 +192,62 @@ const makePost=(item) =>{
                 lcnt.style.backgroundColor='#ACA0EB';
                 likeFlag=true;
 
-                const addLike = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
-                    method:'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        "id": inputData.id,
-                        "title": inputData.value,
-                        "content": inputData.value,
-                        "likes": inputData.likes+1,
-                        "views": inputData.views,
-                        "date":inputData.date,
-                        "writer": inputData.writer,
-                        "image":  inputData.image,
-                        "comment": inputData.comment || []
-                    }),
-                });
+                const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+                const board = await tmp.json();
+                const formData = new FormData();
+                formData.append("id", parseInt(board.id));
+                formData.append('title', board.title);
+                formData.append('content', board.content);
+                formData.append('likes', parseInt(board.likes)+1);
+                formData.append('views', parseInt(board.views));
+                formData.append('date',board.date);
+                formData.append('writer', board.writer); 
+                // formData.append('comment', JSON.stringify(board.comment));
+                const commentData = board.comment && Array.isArray(board.comment) ? board.comment : [];
+                formData.append("comment", JSON.stringify(commentData)); // JSON 문자열로 변환
+                // if(board)
+                // console.log(commentData);
+                // 이미지 파일 추가
+                if (board.image) {
+                    formData.append('image', board.image);
+                }
+                // else formData.append('image', inputData.image);
+                // try {
+                    const response = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+                        method: 'PATCH',
+                        body: formData, // FormData 전송
+                    });
                 // location.reload();
             }
             else{
                 lcnt.style.backgroundColor='#D9D9D9';
                 likeFlag=false;
-                const minusLike = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
-                    method:'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        "id": inputData.id,
-                        "title": inputData.value,
-                        "content": inputData.value,
-                        "likes": inputData.likes-1,
-                        "views": inputData.views,
-                        "date":inputData.date,
-                        "writer": inputData.writer,
-                        "image":  inputData.image,
-                        "comment": inputData.comment || []
-                    }),
-                });
+                
+                const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
+                const board = await tmp.json();
+                const formData = new FormData();
+                formData.append("id", parseInt(board.id));
+                formData.append('title', board.title);
+                formData.append('content', board.content);
+                formData.append('likes', parseInt(board.likes)-1);
+                formData.append('views', parseInt(board.views));
+                formData.append('date',board.date);
+                formData.append('writer', board.writer); 
+                // formData.append('comment', JSON.stringify(board.comment));
+                const commentData = board.comment && Array.isArray(board.comment) ? board.comment : [];
+                formData.append("comment", JSON.stringify(commentData)); // JSON 문자열로 변환
+                // if(board)
+                // console.log(commentData);
+                // 이미지 파일 추가
+                if (board.image) {
+                    formData.append('image', board.image);
+                }
+                // else formData.append('image', inputData.image);
+                // try {
+                    const response = await fetch(`http://localhost:4000/api/boards/${boardId}`, {
+                        method: 'PATCH',
+                        body: formData, // FormData 전송
+                    });
             }
             const response = await fetch(`http://localhost:4000/api/boards/${boardId}`);
             const updatedData = await response.json();
@@ -208,12 +261,28 @@ const makePost=(item) =>{
     });
     document.addEventListener('click', async(event) => {
         if(event.target.closest('#deleteBtn')){
+
+            const params = new URLSearchParams(window.location.search);
+            const postId = params.get('id'); // 현재 게시글 ID 가져오기
+            const deleteBoard = async (postId) => {
+                const response = await fetch(`http://localhost:4000/api/boards/${postId}`, {
+                    method: 'DELETE',
+                });
+            
+                if (!response.ok) {
+                    alert('게시글 삭제에 실패했습니다.');
+                    return;
+                }
+            
+                alert('게시글이 삭제되었습니다.');
+                location.href = `${getServerUrl()}//board-modify.html`;
+            };
             Dialog(
                 '게시글을 삭제하시겠습니까?',
                 '삭제한 내용은 복구 할 수 없습니다.',
                 async () => {
                     // alert("midcheck");
-                    const response = await deleteComment(postId, commentId);
+                    const response = await deleteBoard(postId);
                     if (!response.ok) {
                         Dialog('삭제 실패', '댓글 삭제에 실패하였습니다.');
                         return;
@@ -225,10 +294,62 @@ const makePost=(item) =>{
             );
         }
     });
+    // const commentInput = document.getElementById('tarea').value;
+    async function submitComment(postId) {
+        const commentInput = document.getElementById('tarea').value;
+        const writer = 'june'; // 로그인된 사용자 닉네임 (예제)
+    
+        const response = await fetch(`http://localhost:4000/api/boards/${postId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ccontent: commentInput,
+                cwriter: writer
+            }),
+        });
+    
+        if (response.ok) {
+            alert('댓글이 성공적으로 추가되었습니다!');
+            location.reload(); // 새로고침
+        } else {
+            alert('댓글 추가 실패');
+        }
+    }
+    
+    // 버튼 클릭 시 실행
+    const clickBtn=document.querySelector('.commentInputBtn');
+    clickBtn.addEventListener('click', function () {
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id'); // 현재 게시글 ID 가져오기
+        if(clickBtn.length===0) return;
+        else if(clickBtn.textContent==="댓글 수정"){
+            CommentItem.CommentModify();
+        }
+        else{
+            submitComment(postId);
+        }
+    });
+    
 }
 
 const CommentItem = (data, writerId, postId, commentId) => {
     const CommentDelete = () => {
+        const deleteComment = async (postId, commentId) => {
+            const response = await fetch(`http://localhost:4000/api/boards/${postId}/comments/${commentId}`, {
+                method: 'DELETE',
+            });
+        
+            if (!response.ok) {
+                alert('댓글 삭제에 실패했습니다.');
+                return;
+            }
+        
+            alert('댓글이 삭제되었습니다.');
+            location.reload(); // 삭제 후 새로고침
+        };
+        
         Dialog(
             '댓글을 삭제하시겠습니까?',
             '삭제한 내용은 복구 할 수 없습니다.',
@@ -283,15 +404,18 @@ const CommentItem = (data, writerId, postId, commentId) => {
             }
             // 서버로 수정된 댓글 내용 전송하는 로직
             const updatedContent = textarea.value;
-            const sendData = {
-                commentContent: updatedContent,
-            };
-
-            const response = await updateComment(postId, commentId, sendData);
+            const response = await fetch(`http://localhost:4000/api/boards/${postId}/comments/${commentId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ccontent: updatedContent }),
+            });;
             if (!response.ok)
                 return Dialog('수정 실패', '댓글 수정에 실패하였습니다.');
 
-            location.href = '/post.html?id=' + postId;
+            // location.href = '/post.html?id=' + postId;
+            location.reload();
         };
 
         // 취소 버튼 생성 및 설정

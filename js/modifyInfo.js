@@ -11,7 +11,7 @@ let nickCnt=new Map();
 nickCnt.set('ggg',1);
 const nicknametmp='gg';
 document.getElementById('signupBtn').addEventListener('click',function(){
-    const nickname = nicknametmp;//document.getElementById('nickname').value;
+    const nickname = document.getElementById('nickname').value;
     // alert("Ins");
     if(nickname.trim().length===0){
         helperText.innerHTML='닉네임을 입력해주세요.';
@@ -22,7 +22,7 @@ document.getElementById('signupBtn').addEventListener('click',function(){
         helperText.style.display='block';
     }
     else if (nickCnt.get(nickname) > 0){
-        helperText.innerHTML='중복된 닉네임입니다.';
+        helperText.innerHTML='중복된 닉네임입니다.'; // 인증인가시 구현예정
         helperText.style.display='block';
     }
     else if(nickname.length>10){
@@ -125,7 +125,7 @@ const Dialog = (title, description, submitCallBack, type = 'alert') => {
         Background.remove();
     });
 };
-document.getElementById('withdrawBtn').onclick = async() => {
+document.getElementById('withdrawBtn').onclick = async() => { // 인증-인가에서 구현예정
 // document.addEventListener('click', async(event) => {
     // if(event.target.closest('#withdrawBtn')){
     // alert("d");

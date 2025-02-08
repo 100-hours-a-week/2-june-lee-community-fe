@@ -12,7 +12,7 @@ const helperTextPwck = document.getElementById('pwckh');
 const signupBtn = document.getElementById('signupBtn');
 let modifyFlag=false;
 function isValidPwd(value){
-    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
+    return /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
 }
 
 inputPwd.addEventListener('blur', ()=>{
@@ -48,6 +48,10 @@ inputPwd.addEventListener('blur', ()=>{
         helperTextPwck.style.display='none';
         modifyFlag=true;
         signupBtn.style.backgroundColor='#7F6AEE';
+    }
+    else if(check){
+        helperTextPwd.style.display='none';
+        helperTextPwck.style.display='none';
     }
 });
 inputPwck.addEventListener('blur', ()=>{
