@@ -261,8 +261,28 @@ const getServerUrl = () => {
 // document.getElementById('backtologin').addEventListener('click',function(){
 //     window.location.href=`${getServerUrl}/loginpage.html`;
 // });
-document.getElementById('signupBtn').addEventListener('click',async function(){
+document.getElementById('signupBtn').addEventListener('click', async ()=>{
     if(!(imck && emck && pwck && pwkck && nkck)) return;
+
+    const formData = new FormData();
+    formData.append('nickname', inputNkname.value);
+    formData.append('email', inputEmail.value);
+    formData.append('password', inputPwd.value);
+
+    // 이미지 파일 추가
+    formData.append('profileImage', inputImg.files[0]);
+    
+    const response = await fetch('http://localhost:4000/api/users/signup', {
+        method: 'POST',
+        body: formData,
+    });
+
+    if (response.ok) {
+        console.log('회원가입 성공');
+        window.location.href=`${getServerUrl()}/loginpage.html`;
+    } else {
+        console.log('회원가입 실패');
+    }
 
 
     // const formData = new FormData();
@@ -281,7 +301,7 @@ document.getElementById('signupBtn').addEventListener('click',async function(){
     // fetch(`${getServerUrl()}/post.html`);
     // .then((response) => {
         // if(response.ok) 
-            window.location.href =`${getServerUrl()}/loginpage.html`;
+            // window.location.href =`${getServerUrl()}/loginpage.html`;
         
         // else alert("뭔가에러가있어요");
     // });

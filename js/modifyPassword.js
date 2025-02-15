@@ -1,8 +1,8 @@
 const getServerUrl = () => {
     const host = window.location.hostname;
     return host.includes('localhost')
-        ? 'http://localhost:3000'
-        : 'http://localhost:3000';
+        ? 'http://localhost:4000'
+        : 'http://localhost:4000';
 };
 
 const inputPwd = document.getElementById('pw');
@@ -71,8 +71,34 @@ inputPwck.addEventListener('blur', ()=>{
         signupBtn.style.backgroundColor='#7F6AEE';
     }
 });
-signupBtn.addEventListener('click',()=>{
+signupBtn.addEventListener('click', async () => {
+    const response = await fetch('http://localhost:4000/api/users/auth/check', {
+        method: 'GET',
+        credentials: 'include' // 쿠키 포함
+    });
+
+    if (response.ok) {
+        console.log('인증 성공');
+    } else {
+        console.log('인증 실패');
+        window.location.href=`http://localhost:3000/loginpage.html`;
+    }
+
     if(modifyFlag){
-        window.location.href=`${getServerUrl()}/posts.html`;
+        // const userId = localStorage.getItem('userId'); // userId 가져오기
+        // console.log(userId);
+        const modifyPwd = await fetch(`http://localhost:4000/api/users`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({password: inputPwd.value }),
+            credentials: 'include' // 쿠키 포함
+        });
+    
+        if (modifyPwd.ok) {
+            console.log('비밀번호 수정 성공');
+            window.location.href=`http://localhost:3000/posts.html`;
+        } else {
+            console.log('비밀번호 수정 실패');
+        }
     }
 });

@@ -5,6 +5,7 @@ const getServerUrl = () => {
         : 'http://localhost:3000';
 };
 const loadPost = async () => {
+
     try {
         // URL에서 ID 추출
         const params = new URLSearchParams(window.location.search);

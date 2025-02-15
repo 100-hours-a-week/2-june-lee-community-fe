@@ -12,6 +12,19 @@ const getServerUrl = () => {
 
 // const loadPost = async () => {
 async function loadPost(){
+    const loginUser = await fetch('http://localhost:4000/api/users', {
+        method: 'GET',
+        credentials: 'include' // 쿠키 포함
+    });
+
+    if (loginUser.ok) {
+        console.log('인증 성공');
+    } else {
+        console.log('인증 실패');
+        window.location.href=`http://localhost:3000/loginpage.html`;
+    }
+    const profileImg = await loginUser.json();
+
     try {
         // URL에서 ID 추출
         const params = new URLSearchParams(window.location.search);
@@ -26,7 +39,7 @@ async function loadPost(){
         const boardComments = board.comment || [];
         // console.log(boardComments[0]);
         // console.log('게시글 상세:', board);
-        makePost(board);
+        makePost(board,profileImg.profileImage);
         ///////////////////////////////////
         // const tmp = await fetch(`http://localhost:4000/api/boards/${boardId}`);
         // const inputData = await tmp.json();
@@ -94,7 +107,7 @@ async function loadPost(){
 };
 
 // JSON 데이터를 가져와 렌더링하는 함수
-const makePost=(item) =>{
+const makePost=(item, profileImage) =>{
     const postContainer = document.getElementById('postContainer'); // 데이터를 추가할 컨테이너
     // const response = await fetch(`${getServerUrl()}/api/boards`); // JSON 파일 불러오기
     // const boardData = await response.json(); // JSON 데이터 파싱
@@ -118,7 +131,7 @@ const makePost=(item) =>{
                     <h1 class="title">${item.title}</h1>
                     <div class="writerWrap">
                         <picture class="profileImg">
-                            <img src="${item.image ? `http://localhost:4000${item.image}` : './public/image/default.jpg'}" alt="img"/>
+                            <img src="${profileImage ? `http://localhost:4000/${profileImage}` : './public/image/default.jpg'}" alt="img"/>
                         </picture>
                         <h2 class="nickname">${item.writer}</h2>
                         <h3 class="createdAt">${item.date}</h3>
@@ -130,7 +143,7 @@ const makePost=(item) =>{
                     </div>
                 </section>
                 <section class="body">
-                    <div class="contentImg"> <img src="${item.image ? `http://localhost:4000${item.image}` : './public/image/default.jpg'}" alt="게시글 이미지"></div>
+                    <div class="contentImg"> <img src="${item.image ? `http://localhost:4000/${item.image}` : './public/image/default.jpg'}" alt="게시글 이미지"></div>
                     <article class="content">${item.content}</article>
                     <article class="bodyWrap">
                         <div class="commentWrap">
@@ -161,7 +174,7 @@ const makePost=(item) =>{
             <div class="background"></div>
         `;
         postContainer.innerHTML = boardHTML; // HTML 추가
-    console.log(postContainer);
+    // console.log(postContainer);
     let beforeColor, beforeBcolor;
     document.addEventListener('mouseover', (event) => {
         if (event.target.matches('button')) {

@@ -81,14 +81,29 @@ inputFieldPwd.addEventListener('input', () => {
 // });
 
 
-document.getElementById('login').addEventListener('click',function(){
+document.getElementById('login').addEventListener('click',async ()=>{
     const email = document.getElementById('id').value;
     const password = document.getElementById('pw').value;
     // fetch(`${getServerUrl()}/post.html`);
     // .then((response) => {
         // if(response.ok) 
             // window.location.href =`${getServerUrl()}/post.html`;
-            if(logInFlag) window.location.href =`${getServerUrl()}/posts.html`;
+    if(logInFlag){
+        const response = await fetch('http://localhost:4000/api/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include' // 쿠키 포함
+        });
+    
+        if (response.ok) {
+            console.log('로그인 성공');
+            window.location.href=`${getServerUrl()}/posts.html`;
+        } else {
+            console.log('로그인 실패');
+        }
+        // window.location.href =`${getServerUrl()}/posts.html`;
+    }
         
         // else alert("뭔가에러가있어요");
     // });
